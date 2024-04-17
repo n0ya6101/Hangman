@@ -16,6 +16,14 @@ const jsConfetti = new JSConfetti();
 
 const winAudio = new Audio('./resource/win.mp3'); 
 const loseAudio = new Audio('./resource/lose.mp3');
+const correctAudio = new Audio('./resource/correct.mp3'); 
+const wrongAudio = new Audio('./resource/wrong.mp3');
+const clickAudio = new Audio('./resource/click.mp3'); 
+
+
+function playClickSound() {
+  clickAudio.play();
+}
 
 function playWinSound() {
   winAudio.play();
@@ -24,6 +32,14 @@ function playWinSound() {
 
 function playLoseSound() {
   loseAudio.play();
+}
+
+function playCorrectGuessSound() {
+  correctAudio.play();
+}
+
+function playWrongGuessSound() {
+  wrongAudio.play();
 }
 
 const categoryMenu = document.querySelector(".category-menu"),
@@ -43,11 +59,15 @@ const categoryMenu = document.querySelector(".category-menu"),
 
   }
 
-category_btn.addEventListener("click", ()=> categoryMenu.classList.toggle("active"));
+category_btn.addEventListener("click", ()=> { 
+  playClickSound();
+  categoryMenu.classList.toggle("active")
+});
 
 c_Options.forEach(option =>{
 
   option.addEventListener("click", ()=>{
+    playClickSound()
     let selectedOption = option.querySelector(".c-option-text").innerText;
     category_menu_text.innerText= selectedOption;
     categoryMenu.classList.remove("active");
@@ -62,11 +82,15 @@ const difficultyMenu = document.querySelector(".difficulty-menu"),
   d_Options = document.querySelectorAll(".d-option"),
   difficulty_menu_text = document.querySelector(".difficulty-menu-text");
 
-difficulty_btn.addEventListener("click", ()=> difficultyMenu.classList.toggle("active"));
+difficulty_btn.addEventListener("click", ()=> { 
+  playClickSound();
+  difficultyMenu.classList.toggle("active")
+});
 
 d_Options.forEach(option =>{
 
   option.addEventListener("click", ()=>{
+    playClickSound()
     let selectedOption = option.querySelector(".d-option-text").innerText;
     difficulty_menu_text.innerText= selectedOption;
     difficultyMenu.classList.remove("active");
@@ -411,6 +435,7 @@ const initializer = () => {
           //if character in array is same as clicked button
           if (char === button.innerText) {
             //replace dash with letter
+            playCorrectGuessSound();
             dashes[index].innerText = char;
             //increment counter
             winCount += 1;
@@ -430,6 +455,7 @@ const initializer = () => {
         });
       } else {
         //lose count
+        playWrongGuessSound();
         count += 1;
         //for drawing man
         drawMan(count);
@@ -580,7 +606,18 @@ const drawMan = (count) => {
 
 
 //New Game
-newGameButton.addEventListener("click", initializer);
+
+
+newGameButton.addEventListener("click", () => {
+  playClickSound(); 
+  initializer(); 
+});
+
+document.getElementById('home-redirect').addEventListener("click", () => {
+  playClickSound();
+
+});
+
 
 window.onload = initializer;
 
