@@ -25,6 +25,13 @@
 
 //activating login,signup,profile 
 
+const clickAudio = new Audio('./game/resource/click.mp3'); 
+
+
+function playClickSound() {
+  clickAudio.play();
+}
+
 let loginOrSignupClicked = false;
 
 checkLoginStatus();
@@ -56,6 +63,7 @@ function checkLoginStatus() {
 }
 
 document.getElementById("show-how-to-play").addEventListener("click", function() {
+    playClickSound();
     // Scroll to the footer content
     document.querySelector(".how-to-play").scrollIntoView({ behavior: "smooth" });
 });
@@ -63,6 +71,7 @@ document.getElementById("show-how-to-play").addEventListener("click", function()
 document.addEventListener("DOMContentLoaded", function() {
     // Code to execute after DOM content is fully loaded
     document.getElementById("scroll-to-top-btn").addEventListener("click", function() {
+        playClickSound();
         // Scroll to the top of the page
         window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -72,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 document.querySelector("#show-login").addEventListener("click", function(){
+    playClickSound();
     loginOrSignupClicked = true; // Update the variable when login is clicked
     document.querySelector("#login").classList.add("active");
     document.querySelector("#hangman-header").classList.add("h1-active");
@@ -82,6 +92,7 @@ document.querySelector("#show-login").addEventListener("click", function(){
 });
 
 document.querySelector("#sign-in-redirect").addEventListener("click", function(){
+    playClickSound();
     loginOrSignupClicked = true; // Update the variable when signup is clicked
     document.querySelector("#login").classList.remove("active");
     document.querySelector("#signup").classList.add("active");
@@ -90,6 +101,7 @@ document.querySelector("#sign-in-redirect").addEventListener("click", function()
 });
 
 document.querySelector("#show-profile").addEventListener("click", function(){
+    playClickSound();
 
     let logged_username=document.getElementById('username-profile').textContent
     console.log("profile clicked")
@@ -110,7 +122,7 @@ document.querySelector("#show-profile").addEventListener("click", function(){
         getprofile(username_logged);
     }
     else{
-        document.getElementById("msg-profile").innerText="Welcome new user!!\nLogin to save your progress";
+        document.getElementById("msg-profile").innerText="Fun Fact!!\nYou can now login to save your progress";
     }
     // Check if login or signup was clicked before profile
     if (loginOrSignupClicked) {
@@ -134,6 +146,7 @@ document.querySelector("#show-profile").addEventListener("click", function(){
 
 
 document.querySelector("#profileclose").addEventListener("click", function(){
+    playClickSound();
     document.querySelector("#profile").classList.remove("active");
     if (loginOrSignupClicked) {
         // If yes, remove classes instead of toggling
@@ -154,12 +167,14 @@ document.querySelector("#profileclose").addEventListener("click", function(){
 
 // closeing popus
 document.querySelector("#close-btn-login").addEventListener("click",function(){
+    playClickSound();
     document.querySelector("#login").classList.remove("active");
     document.querySelector("#hangman-header").classList.remove("h1-active");
     document.querySelector("#newgame").classList.remove("newgame-active");
 });
 
 document.querySelector("#close-btn-signup").addEventListener("click",function(){
+    playClickSound();
     document.querySelector("#login").classList.add("active");
     document.querySelector("#signup").classList.remove("active");
 });
@@ -174,6 +189,7 @@ document.querySelector("#close-btn-signup").addEventListener("click",function(){
 document.addEventListener("DOMContentLoaded", function() {
     // Add event listener to the sign-up button
     document.querySelector("#btn-signup").addEventListener("click", function(event) {
+        playClickSound();
         console.log("clicked");
         // Prevent default form submission behavior
         event.preventDefault();
@@ -301,6 +317,7 @@ document.addEventListener("DOMContentLoaded", function() {
 document.addEventListener("DOMContentLoaded", function() {
     // Add event listener to the sign-up button
     document.querySelector("#btn-login").addEventListener("click", function(event) {
+        playClickSound();
        
         // Prevent default form submission behavior
         event.preventDefault();
@@ -469,6 +486,7 @@ async function getprofile (username){
 //     document.getElementById('avatar-upload').click();
 // });
 document.getElementById('avatar-img').addEventListener('click', function() {
+    playClickSound();
     let logged_username=document.getElementById('username-profile').textContent;
     if (logged_username!="Guest")
     {
@@ -509,6 +527,7 @@ document.getElementById('avatar-upload').addEventListener('change', function(eve
 
 
 document.getElementById('logout-span').addEventListener('click', function() {
+    playClickSound();
     this.classList.toggle('clicked');
     document.getElementById('logout-span').style.visibility = 'hidden';
    
