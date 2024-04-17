@@ -122,7 +122,7 @@ document.querySelector("#show-profile").addEventListener("click", function(){
         getprofile(username_logged);
     }
     else{
-        document.getElementById("msg-profile").innerText="Fun Fact!!\nYou can now login to save your progress";
+        document.getElementById("msg-profile").innerText="Fun Fact!!\nLogin to save your progress";
     }
     // Check if login or signup was clicked before profile
     if (loginOrSignupClicked) {
