@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="hero">
+
+        <!-- alert-boxes -->
+        <div class="alert-box">
+            <p class="alert"></p>
+        </div>
+
+        <!-- <div class="negative-alert-box">
+            <p class="n-alert"></p>
+        </div>
+
+        <div class="positive-alert-box">
+            <p class="p-alert"></p>
+        </div> -->
+
+        <!-- background -->
+        <video autoplay loop muted plays-inline class="bg-vid" playbackRate="0.0025">
+            <source src="game/resource/bg_vid.mp4" type="video/mp4">
+        </video>
+        
+
+
+        <!-- navbar -->
+        <nav>
+            <img src="game/resource/hangman_logo_svg.svg" class="logo">
+            <ul>
+                <li><a class="popup-btn" id="show-how-to-play">How to Play</a></li>
+                <li><a class="popup-btn" id="show-profile">PROFILE</a></li>
+                <li><a class="popup-btn" id="show-login" >LOGIN</a></li>
+            </ul>
+        </nav>
+
+        <!-- content -->
+        <div class="content">
+            <h1 id="hangman-header">Hangman</h1>
+            <div class="btn-1">
+            <a href="game/index.html" class="newgame" id="newgame"><span>New Game</span></a>
+
+
+            <div class="popup" id="login">
+                <div class="popup-content">
+                    <div class="close-btn" id="close-btn-login">
+                        <!-- <ion-icon name="close" id="close-btn-icon"></ion-icon> -->
+                        &times;
+    
+                    </div>
+    
+                    <form class="form" id="login-form">
+                        <h2>Login</h2>
+                        <div class="form-input-element">
+                            <!-- <span class="icon">
+                                <ion-icon name="person"></ion-icon>
+                            </span> -->
+                            
+                            <input type="text" id="username-L" required name="username" size="40">
+                            <label for="username-L">
+                                <ion-icon class="i-icon" name="person"></ion-icon>
+                                Username
+                            </label>
+                        </div>
+                        <div class="form-input-element">
+                            <!-- <span class="icon">
+                                <ion-icon name="lock"></ion-icon>
+                            </span> -->
+                            
+                            <input type="password" id="password-L" required name="pass" size="40">
+                            <label for="password-L">
+                                <ion-icon class="i-icon" name="lock"></ion-icon>Password</label>
+                        </div>
+                        <!-- <div class="form-element">
+                            <input type="checkbox" id="remember-me">
+                            <label for="remember-me">Remember me</label>
+                        </div> -->
+                        <div class="form-element" >
+                            <button type="submit" id="btn-login">Login</button>
+                        </div>
+                        <div class="sign-in-redirect">
+                            <p>Haven't signed in yet?</p>
+                            <a href="#" id="sign-in-redirect" >Signup</a>
+                        </div>
+                    </form>
+                </div>
+
+                
+            </div>
+
+            
+            <div class="popup" id="signup">
+                <div class="popup-content">
+                    <div class="close-btn" id="close-btn-signup">&times;</div>
+
+                <form class="form" id="signup-form" action="/" method="POST">
+                    <h2>Sign up</h2>
+                    <div class="form-input-element">
+                        <!-- <span class="icon">
+                            <ion-icon name="person"></ion-icon>
+                        </span> -->
+                        
+                        <input type="text" id="username-S" required name="username" size="40">
+                        <label for="username-S"> <ion-icon class="i-icon" name="person"></ion-icon>Username</label>
+                    </div>
+                    <div class="form-input-element">
+                        <!-- <span class="icon">
+                            <ion-icon name="lock"></ion-icon>
+                        </span> -->
+                        
+                        <input type="password" id="password-S" required name="password" size="40">
+                        <label for="password-S"> <ion-icon class="i-icon" name="lock"></ion-icon>Password</label>
+                    </div>
+
+                    <div class="form-input-element">
+                        <input type="password" id="confirm-password" required name="c-pass" size="40">
+                        <label for="confirm-password"> <ion-icon class="i-icon" name="lock"></ion-icon>Confirm Password</label>
+                    </div>
+
+                    <div class="form-element" >
+                        <button type="submit" id="btn-signup">Signup</button>
+                    </div>
+                </form>
+                </div>
+
+                
+            </div>
+            
+
+
+            <div class="popup" id="profile">
+                <img  class="cover-pic">
+                <div class="popup-content">
+                    <span id="logout-span">
+                        <img src="game/resource/logout-logo.svg" class="logout" id="logout">
+                        <p class="logouttxt" >Logout</p>
+                    </span>
+
+                    <p class="back" id="profileclose">X</p>
+                    <img src="./game/resource/profile1.jpg" class="profile-pic" id="avatar-img">
+                    <h2 id="username-profile">Guest</h2>
+                    <p id="msg-profile">Welcome!!\nHow are you today?</p>
+                    <input type="file" id="avatar-upload" style="display: none;" />
+                    <!-- <label for="avatar-upload" class="profile-pic" id="avatar-label">Change Avatar</label> -->
+                    
+                    <div class="row">
+                        <div>
+                            <p>Total</p>
+                            <h3 id="total-profile">0</h3>
+                        </div>
+                        <div>
+                            <p >Wins</p>
+                            <h3 id="wins-profile" style="color: #216b02;">0</h3>
+                        </div>
+                        <div>
+                            <p >Loses</p>
+                            <h3 id="losses-profile" style="color: #cf1e1e;">0</h3>
+                        </div>
+                </div>
+            </div>
+            
+
+        </div>
+        </div>
+    </div>
+</div>
+    <script src="script.js"></script>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    
+</body>
+<footer>
+    <div class="footer-content">
+        <div class="game-info">
+            <h1>ABOUT HANGMAN</h1>
+            <p style="font-size: 22px;">Hangman is a classic word-guessing game where players attempt to guess a hidden word by suggesting letters within a certain number of guesses. Each time a wrong guess is made, a part of the Hangman figure is drawn, and your goal is to guess the word correctly before the Hangman figure is complete!</p>
+            <p>The game offers a variety of categories, allowing players to choose from a wide range of topics such as animals, countries, sports, and more. Additionally, each category has different difficulty levels to challenge players of all skill levels. So whether you're a beginner or an expert, there's a Hangman game for everyone!</p>
+        </div>
+        
+        <div class="how-to-play">
+            <h2>How to Play</h2>
+            <li>Choose a category and difficulty level to start a new game.</li>
+            <li> You'll be presented with a hidden word represented by blank spaces, with each dash representing a letter in the word.</li>
+            <li>Your task is to guess the letters one by one. If you make a correct guess, the letter will be revealed in it's respective position in the word.</li>
+            <li>If you guess incorrectly, a part of the Hangman figure will be drawn.</li>
+            <li>Continue guessing letters until you either solve the word by filling in all the blanks or run out of guesses, resulting in the Hangman figure being complete.</li>
+            <p style="font-style: italic;">Remember, your goal is to guess the word correctly before the Hangman figure is fully drawn!</p>
+            <!-- <p>Categories: (List your categories here)</p>
+            <p>Difficulty Levels: (List your difficulty levels here)</p> -->
+            
+        </div>
+        <div class="scroll-up">
+            <ul>        
+                <li><a class="popup-btn" id="scroll-to-top-btn">Ready to play?</a></li>  
+            </ul>
+        </div>
+    </div>
+    
+    
+</footer>
+
+
+</html>

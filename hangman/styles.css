@@ -1,0 +1,642 @@
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+}
+
+.hero{
+    width:100%;
+    height:100vh;
+    /* background-image: linear-gradient(rgb(256,220,92),rgb(256,220,92)); */
+    position: relative;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+nav{
+    width:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    padding: 20px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+nav .logo{
+    width:80px;
+}
+
+nav ul li{
+    list-style: none;
+    display: inline-block;
+    margin-left: 40px;
+}
+
+
+.alert-box {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 150px;
+    max-width: 90%;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    text-transform: capitalize;
+    background: rgba(253, 23, 23);
+    border-top: 10px solid rgba(253, 105, 105);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: #fff;
+    font-family: 'roboto', sans-serif;
+    font-weight: 200px;
+    text-align: center;
+    transition: top 1s; /* Use transition instead of setting top with JavaScript */
+    z-index: 3;
+}
+
+/* .show {
+    top: 4%; 
+} */
+
+
+.negative{
+    top: 4%; /* Show the alert box */
+    background: rgba(253, 23, 23);
+    border-top: 10px solid rgba(253, 105, 105);
+}
+
+.positive{
+    top:4%;
+    background: rgba(23, 253, 23, 0.596);
+    border-top: 10px solid rgba(105, 253, 105, 0.596);
+}
+
+
+.popup-btn{
+    position: relative;
+    font-size: 1.1em;
+    color: #000000;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 40px;
+    cursor:pointer;
+}
+
+
+.popup-btn::after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 3px;
+    background: #000;
+    border-radius: 5px;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .5s;
+}
+
+.popup-btn:hover:after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.loggedin {
+    display:none;
+}
+
+
+.content{
+    /* display:block;
+    justify-content:flex-start;
+    align-items: center; */
+    text-align: center;
+}
+
+.content h1{
+    margin-top: 20vh; /* Adjust this value according to your design */
+    font-size: 160px;
+    color: black;
+    font-weight: 600;
+    transition: 0.5s;
+    margin-left: auto;
+    margin-right: auto;
+    /* font-size: 160px;
+    color:black;
+    font-weight:600;
+    transition: 0.5s; */
+    transition: 0.8s;
+    
+}
+.content h1:hover{
+    -webkit-text-stroke: 4px black;
+    color:transparent;
+}
+
+.h1-active{
+    position:absolute;
+    font-size: 20px !important;
+    top:-20px;
+    left:110px;
+}
+.h1-active:hover{
+    -webkit-text-stroke: 0px black !important;
+    color:black !important;
+}
+
+
+.btn-1 {    
+    position: relative; 
+    margin:auto;
+    align-self: auto; 
+  
+    width: 300px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+  
+  
+.btn-1 .newgame{
+      
+      
+    text-decoration:none;
+    font-size:large;
+    font-weight: 550;
+    text-shadow: #010100;
+    border: 3px solid #010100;
+    padding: 15px;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    display: inline-block;
+}
+  
+.newgame-active{
+    visibility: hidden;
+}
+span {
+    position: relative;
+    /* z-index coz when we put bg to before and after this span text will not be visible */
+    z-index: 1;
+}
+
+
+/* Button 1 styles */
+  
+.btn-1 .newgame::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: -3px;
+    width: calc(100% + 7px);
+    /*100% plus double the times left values*/
+    height: calc(100% - 10px);
+    background-color: #ffdb5d;    
+    transition: all 0.5s ease-in-out;
+    transform: scaleY(1);
+}
+  
+.btn-1 .newgame:hover::before{
+    transform: scaleY(0);
+}
+  
+.btn-1 .newgame::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: -5px;
+    width: calc(100% - 10px);
+    /*100% plus double the times left values*/
+    height: calc(100% + 10px);
+    background-color: #ffdb5d;
+    transition: all 0.5s ease-in-out;
+    transform: scaleX(1);
+}
+  
+  
+.btn-1 .newgame:hover::after {
+    transform: scaleX(0);
+}
+  
+
+.bg-vid{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+@media (min-aspect-ratio: 16/9){
+    .bg-vid{
+        width:100%;
+        height:auto;
+    }
+}
+
+@media (max-aspect-ratio: 16/9){
+    .bg-vid{
+        width:auto;
+        height:100%;
+    }
+}
+
+.popup{
+    /* visibility: hidden; */
+    position: absolute;
+    top:-520%;
+    left: 50%;
+    
+    transform:translate(-50%,-50%)scale(1.25);
+    width:380px;
+    
+    /* background:white; */
+    background:transparent;
+    /* backdrop-filter:blur(1px); */
+   
+    border: 2px solid rgba(255,255,255,.5);
+    box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    overflow: hidden;
+    transition:0.8s; 
+}
+.popup-content{
+    padding: 20px 30px;
+    backdrop-filter:blur(1px);
+}
+
+#username-profile{
+    margin-top:10px;
+}
+
+.active{
+    /* visibility: visible; */
+    position:absolute;
+    z-index:2;
+    /* top:-30px; */
+    top:120px;
+    /* background-image: linear-gradient(rgb(256,220,92),rgb(256,220,92)); */
+}
+
+
+.close-btn{
+    position:absolute;
+    top:0;
+    right:0;
+    width:40px;
+    height:40px;
+    /* top:10px;
+    right: 10px; */
+    /* width: 15px;
+    height:15px; */
+    background:#222;
+    color:white;
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* color:#eee;
+    text-align: 15px;
+    border-radius: 15px; */
+    cursor:pointer;
+    border-bottom-left-radius: 15px;
+    z-index: 1;
+}
+
+
+.popup .form h2{
+    text-align: center;
+    color:#222;
+    margin:10px 0px 20px;
+    font-size: 25px;
+}
+
+
+.popup .form .form-input-element {
+    position:relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid black;
+    margin: 30px 0;
+    padding-top:10px;
+    
+ /* margin: 15px 0px;    */
+ 
+}
+.popup .form .form-element{
+    margin:20px 0;
+}
+
+.popup .form .form-input-element label{
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 1em;
+    color: #000;
+    font-weight: 500;
+    pointer-events: none;
+    transition: .5s;
+    font-family: "Poppins", sans-serif;
+}
+.popup .form .form-input-element input:focus~label,
+.popup .form .form-input-element input:valid~label
+{
+    top:5px;
+}
+.popup .form .form-input-element input
+{
+    width:100%;
+    height:100%;
+    background: transparent;
+    border:none;
+    outline:none;
+    font-size: 1em;
+    color: black;
+    font-weight: 600;
+    padding:0 35px 0 5px;
+    
+    /* margin-top:5px;
+    display:block;
+    width:100%;
+    padding:10px;
+    outline:none;
+    border:1px solid #aaa;
+    border-radius: 5px; */
+}
+
+
+/* .popup .form .form-input-element .icon{
+    position: absolute;
+    right:8px;
+    font-size: 1.2em;
+    color: black;
+    line-height: 40px;
+
+} */
+.i-icon{
+    position: absolute;
+    left: 280px;
+    font-size: 1.2em;
+    color: #000;
+    line-height: 57px;
+}
+/* .popup .form .form-element input[type="checkbox"]{
+    margin-right:5px;
+
+} */
+.popup .form .form-element button {
+    width:100%;
+    height: 45px;
+    border:none;
+    outline : none;
+    border-radius: 6px;
+    font-size: 15px;
+    color:#f5f5f5;
+    cursor:pointer;
+    background:#222;
+}
+.popup .form .form-element a {
+    display:block;
+    text-align: right;
+    font-size: 15px;
+    color:#1a79ca;
+    text-decoration: none;
+    font-weight:500;
+}
+
+/* signin redirect anchor in login popup */
+.sign-in-redirect {
+    font-size: 14px;
+    
+}
+
+.sign-in-redirect p{
+    font-weight:200px;
+    display: inline-block;
+}
+
+
+
+/* profile */
+
+
+#logout-span{
+    display: inline-block;
+    position: absolute;
+    top:0px;
+    left: 0px; /* Adjust as needed */
+    width: 3vw;
+    color: aliceblue;
+    margin-top: -100px;
+    visibility: visible;
+    
+    cursor: pointer;
+    box-shadow: 0 0 0 0px white;
+    transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+.logout{
+    position: absolute;
+    top: -5px; /* Adjust as needed */
+    left: 10px; /* Adjust as needed */
+    width: 3vw;
+    height: 3vh;
+}
+.logouttxt{
+    /* display: inline-block; */
+    font-size: 10px;
+    font-weight: 200;
+    /* color: aliceblue; */
+    position: absolute;
+    top: 15px; /* Adjust as needed */
+    left: 10px; /* Adjust as needed */
+    /* margin-top: -100px; */
+    width: 3vw;
+    height: 3vh;
+    /* cursor: pointer;
+    box-shadow: 0 0 0 0px white;
+    transition: transform 0.3s ease;  */
+}
+.back{
+    font-family: Arial, Helvetica, sans-serif;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 500;
+    color: aliceblue;
+    position: absolute;
+    top: -5px; /* Adjust as needed */
+    right: 3px; /* Adjust as needed */
+    margin-top: -100px;
+    width: 3vw;
+    height: 3vh;
+    cursor: pointer;
+    box-shadow: 0 0 0 0px white;
+    transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+.hide{
+    display: none;
+}
+
+.logout:hover {
+    transform: scale(1.1); /* Slightly enlarge the logout icon on hover */
+}
+
+.logout:active {
+    transform: scale(0.9); /* Slightly reduce the logout icon on click */
+}
+
+
+.profile-pic {
+    width: 120px;
+    height:120px;
+    border-radius: 50%;
+    margin-top: -100px;
+    box-shadow: 0 0 0 0px black;
+    transition: box-shadow 0.5s, transform 0.5s;
+    border-color: transparent;
+    cursor: pointer;
+}
+
+.profile-pic:hover {
+    box-shadow: 0 0 0 8px #222;
+    transform: scale(1.1); /* Add scaling effect on hover */
+}
+
+.cover-pic {
+    padding: -20px -30px;
+    height: 120px;
+    max-height:120px;
+    background: #222;
+    display: block;
+    width: 100%;
+}
+
+.profile-card h2 {
+    font-weight: 400;
+    display: flex;
+    margin-top: -10px;
+    justify-content: center;
+}
+
+.profile-card p {
+    display: flex;
+}
+
+
+.row {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.row p {
+    font-weight: 600;
+    margin-top: -6px;
+    font-size: 20px;
+}
+
+.row h3 {
+    font-weight: 300;
+    font-size: 30px;
+}
+
+.row h3:hover {
+    animation: scaleUp 0.6s ease-in-out forwards;
+}
+
+#profile {
+    height: 350px;
+}
+
+@keyframes scaleUp {
+    0% {
+        font-size: 30px;
+        font-weight: 300;
+    }
+    50% {
+        font-size: 40px;
+        font-weight: 350;
+    }
+    100% {
+        font-size: 35px;
+        font-weight: 350;
+    }
+}
+
+/* footer */
+
+.footer-content{
+    background-color: #ffdb5e;
+    padding: 60px 120px;
+    position: absolute;
+    font-size: 1.2em;
+    font-weight: 500;
+    border-top:2px dashed rgb(43, 42, 42);
+   
+}
+
+.game-info h1{
+    text-align: center;
+    font-weight: 800;
+    margin-bottom: 30px;
+}
+
+.game-info p{
+    text-align: center;
+    margin-top:20px;
+    font-weight: 400;
+}
+
+.how-to-play{
+    margin-top:40px;
+    font-weight: 400;
+}
+.how-to-play h2{
+    text-decoration:underline;
+    font-weight:800;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.how-to-play li{
+    margin-top:20px;
+  
+}
+.how-to-play p{
+    font-size: 22px;
+ margin-top:20px;
+}
+
+.scroll-up ul {
+    list-style: none; /* Remove default list styling */
+    text-align: center; /* Center the text horizontally */
+}
+
+.scroll-up li {
+    margin: 0; /* Remove default margin */
+}
+
+.scroll-up a {
+    margin-top:10px;
+    display: inline-block; /* Make the anchor element behave like a block element */
+}
+
+
+
+
+

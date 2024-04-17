@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <!-- fontAwesom kit -->
+        <script src="https://kit.fontawesome.com/b6e7d24509.js" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="style_game.css">
+
+  </head>
+  <body>
+    <video autoplay loop muted plays-inline class="bg-vid">
+      <source src="resource/bg_vid.mp4" type="video/mp4">
+  </video>
+
+  <nav>
+    <img src="resource/hangman_logo_svg.svg" class="logo">
+    <div class="user-profile">
+        <img src="resource/profile1.jpg" class="profile-pic">
+        <h4 id="username-profile">GUEST</h4>
+    </div>
+</nav>
+
+
+    <div class="game_wrapper">
+      
+      <canvas id="canvas"></canvas>
+
+      <div class="container">
+
+      
+        <h2>Please Select An Option</h2>
+  
+        <div id="stats">
+          <div class="stat">
+            <div class="stat-label"><p>Wins</p></div>
+            <div class="stat-value" id="wins">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label"><p>Losses</p></div>
+            <div class="stat-value" id="losses">0</div>
+          </div>
+        </div>
+  
+  
+         <div class="menu-wrapper">
+          <div class="category-menu">
+            <button class="category-btn">
+              <span class="category-menu-text">Select a Category</span>
+              <i class="fa-solid fa-angle-down"></i>
+            </button>
+    
+            <ul class="c-options">
+              <li class="c-option" onclick="join('sports','category')">
+                <i class="fa-solid fa-medal"></i>
+                <span class="c-option-text">Sport</span>
+              </li>
+              <li class="c-option" onclick="join('socials','category')">
+                <i class="fa-solid fa-heart"></i>
+                <span class="c-option-text">Social Media</span>
+              </li>
+              <li class="c-option" onclick="join('currencies','category')">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+                <span class="c-option-text">Currency</span>
+              </li>
+              <li class="c-option" onclick="join('colors','category')">
+                <i class="fa-solid fa-palette"></i>
+                <span class="c-option-text">Color</span>
+              </li>
+              <li class="c-option" onclick="join('rivers','category')">
+                <i class="fa-solid fa-water"></i>
+                <span class="c-option-text">River</span>
+              </li>
+                <li class="c-option" onclick="join('fruits','category')">
+                  <i class="fa-solid fa-apple-whole"></i>
+                  <span class="c-option-text">Fruit</span>
+                </li>
+                <li class="c-option" onclick="join('vegetables','category')">
+                  <i class="fa-solid fa-carrot"></i>
+                  <span class="c-option-text">Vegetable</span>
+                </li>
+                <li class="c-option" onclick="join('countries','category')">
+                  <i class="fa-solid fa-globe"></i>
+                  <span class="c-option-text">Country</span>
+                </li>
+                <li class="c-option" onclick="join('animals','category')">
+                  <i class="fa-solid fa-paw"></i>
+                  <span class="c-option-text">Animal</span>
+                </li>
+                <li class="c-option" onclick="join('birds','category')">
+                  <i class="fa-solid fa-feather"></i>
+                  <span class="c-option-text">Bird</span>
+                </li>
+                <li class="c-option" onclick="join('insects','category')">
+                  <i class="fa-solid fa-bug"></i>
+                  <span class="c-option-text">Insect</span>
+                </li>
+                <li class="c-option" onclick="join('metals','category')">
+                  <i class="fa-brands fa-elementor"></i>
+                  <span class="c-option-text">Metal</span>
+                </li>
+                <li class="c-option" onclick="join('elements','category')">
+                  <i class="fa-brands fa-elementor"></i>
+                  <span class="c-option-text">Element</span>
+                </li>
+                <li class="c-option" onclick="join('planets','category')">
+                  <i class="fa-solid fa-earth-asia"></i>
+                  <span class="c-option-text">Planet</span>
+                </li>
+                <!-- <li class="c-option" onclick="join('subjects','category')">
+                  <i class="fa-solid fa-book"></i>
+                  <span class="c-option-text">Subject</span>
+                </li> -->
+                
+                
+
+
+            </ul>
+           
+          </div>
+    
+          <div class="difficulty-menu">
+            <button class="difficulty-btn">
+              <span class="difficulty-menu-text">Select a Difficulty</span>
+              <i class="fa-solid fa-angle-down"></i>
+            </button>
+    
+            <ul class="d-options">
+                <li class="d-option" onclick="join('easy','difficulty')">
+                  <i class="fa-solid fa-gauge-simple-high" id="inverted"></i>
+                  <span class="d-option-text">Easy<span>
+                </li>
+                <li class="d-option" onclick="join('medium','difficulty')">
+                  <i class="fa-solid fa-gauge-simple"></i>
+                  <span class="d-option-text">Medium</span>
+                </li>
+                <li class="d-option" onclick="join('hard','difficulty')">
+                  <i class="fa-solid fa-gauge-simple-high"></i>
+                  <span class="d-option-text">Hard</span>
+                </li>
+            </ul>
+           
+          </div>
+    
+          
+        </div>
+        
+  
+        
+        <div id="letter-container" class="letter-container hide"></div>
+        <div class="wrapper" id="input-wrapper">
+          <div id="user-input-section"></div>
+          <span id="guess-remaining"></span>
+        </div>
+        
+        
+        
+        
+        <div id="new-game-container" class="new-game-popup hide">
+          <img src="resource/result_win.jpeg" alt="won" class="result_win" id="result_win">
+          <img src="resource/result_loss.jpeg" alt="lost" class="result_loss" id="result_loss">
+          
+          <div id="result-text"></div>
+          <div class="btn-wrapper">
+            <button id="new-game-button">New Game</button>
+            <button class="home"><a  id="home-redirect" href="../index.html">Home</a></button>
+            
+          </div>
+          
+        </div>
+      </div>
+
+    </div>
+    <canvas id="confetti"></canvas>
+
+    
+    <!-- Script -->
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
