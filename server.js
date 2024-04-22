@@ -217,8 +217,8 @@ app.post('/uploadavatar', upload.single('avatar'), async (req, res) => {
         // Upload the avatar to Supabase Storage
         const { data: uploadedFile, error: uploadError } = await supabase
             .storage
-            .from('avatars')
-            .upload(`avatars/${file.filename}`, file.buffer);
+            .from('profile')
+            .upload(`profile/${file.filename}`, file.buffer);
 
         if (uploadError) {
             console.error('Error uploading avatar:', uploadError.message);
@@ -270,7 +270,7 @@ app.post("/getprofile", async (req, res) => {
         // If avatar_path is available, construct the full URL using Supabase Storage
         let avatarUrl;
         if (avatar_path) {
-            avatarUrl = `${supabaseUrl}/storage/v1/object/public/avatars/${avatar_path}`;
+            avatarUrl = `${supabaseUrl}/storage/v1/object/public/profile/${avatar_path}`;
         }
 
         res.status(200).json({
