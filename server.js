@@ -24,7 +24,7 @@ const port = process.env.PORT || 8000;
 // Initialize Supabase client
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(supabaseUrl, supabaseKey, { storageBucket: 'profile' });
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'hangman')));
@@ -214,30 +214,18 @@ app.post('/uploadavatar', upload.single('avatar'), async (req, res) => {
     }
 
     try {
-        // Upload the avatar to Supabase Storage
-        const { data: uploadedFile, error: uploadError } = await supabase
-            .storage
-            .from('profile')
-            .upload(`profile/${file.filename}`, file.buffer);
+        // Upload the file to the Supabase bucket
+        const { data, error } = await supabase.storage.from('profile').upload(`${username}/${file.originalname}`, file.buffer);
 
-        if (uploadError) {
-            console.error('Error uploading avatar:', uploadError.message);
+        if (error) {
+            console.error('Error uploading avatar:', error.message);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
 
-        // Update the avatar path in the database
-        const avatarPath = uploadedFile.Key;
-        const { error: updateError } = await supabase
-            .from('player')
-            .update({ avatar_path: avatarPath })
-            .eq('username', username);
+        // Get the URL of the uploaded file
+        const avatarUrl = `${supabaseUrl}/storage/v1/object/public/profile/${username}/${file.originalname}`;
 
-        if (updateError) {
-            console.error('Error updating avatar path:', updateError.message);
-            return res.status(500).send('Internal Server Error');
-        }
-
-        res.status(200).json({ success: true, avatarPath });
+        res.status(200).json({ success: true, avatarUrl });
     } catch (error) {
         console.error('Error uploading avatar:', error.message);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -249,9 +237,10 @@ app.post("/getprofile", async (req, res) => {
     const { username } = req.body;
 
     try {
-        const { data: users, error: fetchError } = await supabase
+        // Fetch user profile data from Supabase
+        const { data: userProfile, error: fetchError } = await supabase
             .from('player')
-            .select('*')
+            .select('username, win, loss')
             .eq('username', username)
             .single();
 
@@ -260,24 +249,18 @@ app.post("/getprofile", async (req, res) => {
             return res.status(500).send('Internal Server Error');
         }
 
-        if (!users) {
+        if (!userProfile) {
             // User not found
             return res.status(404).json({ error: "User not found" });
         }
 
-        const { win, loss, avatar_path } = users;
+        // Get the profile image URL from Supabase Storage
+        const avatarUrl = `${supabaseUrl}/storage/v1/object/public/profile/${username}/${username}.jpg`; // Assuming profile images are stored with the username as the filename and in JPEG format
 
-        // If avatar_path is available, construct the full URL using Supabase Storage
-        let avatarUrl;
-        if (avatar_path) {
-            avatarUrl = `${supabaseUrl}/storage/v1/object/public/profile/${avatar_path}`;
-        }
-
+        // Include profile image URL in the response
         res.status(200).json({
             success: true,
-            username,
-            win,
-            loss,
+            userProfile,
             avatarUrl
         });
     } catch (error) {
