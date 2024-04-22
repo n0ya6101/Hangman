@@ -464,6 +464,7 @@ async function getprofile (username){
             }
             else {
                 document.querySelector('.profile-pic').src = data.avatarPath;
+                localStorage.setItem("username-pfp", data.avatarPath);
             }
            
             
@@ -614,6 +615,3 @@ document.getElementById('logout-span').addEventListener('click', function() {
 //         }
 //     });
 // });
-
-
-

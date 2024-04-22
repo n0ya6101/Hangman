@@ -53,8 +53,12 @@ const categoryMenu = document.querySelector(".category-menu"),
   {
    username=localStorage.getItem("username-logged");
   let pfp=localStorage.getItem("username-pfp");
-  
-  document.querySelector('.profile-pic').src=pfp;
+  console.log(pfp);
+  if (pfp == null){
+    pfp="./resource/profile1.jpg";
+  }
+
+  document.querySelector('.profile-pic').src=pfp; 
   document.getElementById("username-profile").textContent=username;
 
   }
