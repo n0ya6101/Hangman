@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const bodyParser = require('body-parser');
 const { createClient } = require('@supabase/supabase-js');
-const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
+const bcrypt = require('bcryptjs'); 
 const fs = require('fs');
 const cors = require('cors')
 require('dotenv').config();
