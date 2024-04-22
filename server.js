@@ -202,8 +202,9 @@ app.post("/updatestat", async (req, res) => {
     }
 });
 
-// Handle fetching user profiles
-// Handle avatar upload
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 app.post('/uploadavatar', upload.single('avatar'), async (req, res) => {
     const { username } = req.body;
     const file = req.file;
