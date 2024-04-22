@@ -203,6 +203,47 @@ app.post("/updatestat", async (req, res) => {
 });
 
 // Handle fetching user profiles
+// Handle avatar upload
+app.post('/uploadavatar', upload.single('avatar'), async (req, res) => {
+    const { username } = req.body;
+    const file = req.file;
+
+    if (!file) {
+        return res.status(400).send('No file uploaded');
+    }
+
+    try {
+        // Upload the avatar to Supabase Storage
+        const { data: uploadedFile, error: uploadError } = await supabase
+            .storage
+            .from('avatars')
+            .upload(`avatars/${file.filename}`, file.buffer);
+
+        if (uploadError) {
+            console.error('Error uploading avatar:', uploadError.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        // Update the avatar path in the database
+        const avatarPath = uploadedFile.Key;
+        const { error: updateError } = await supabase
+            .from('player')
+            .update({ avatar_path: avatarPath })
+            .eq('username', username);
+
+        if (updateError) {
+            console.error('Error updating avatar path:', updateError.message);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        res.status(200).json({ success: true, avatarPath });
+    } catch (error) {
+        console.error('Error uploading avatar:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Handle fetching user profiles
 app.post("/getprofile", async (req, res) => {
     const { username } = req.body;
 
@@ -218,92 +259,28 @@ app.post("/getprofile", async (req, res) => {
             return res.status(500).send('Internal Server Error');
         }
 
-        if (!users || users.length === 0) {
+        if (!users) {
             // User not found
             return res.status(404).json({ error: "User not found" });
         }
 
         const { win, loss, avatar_path } = users;
+
+        // If avatar_path is available, construct the full URL using Supabase Storage
+        let avatarUrl;
+        if (avatar_path) {
+            avatarUrl = `${supabaseUrl}/storage/v1/object/public/avatars/${avatar_path}`;
+        }
+
         res.status(200).json({
             success: true,
             username,
             win,
             loss,
-            avatarPath: avatar_path
+            avatarUrl
         });
     } catch (error) {
         console.error('Error fetching user profile:', error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-// Handle avatar upload
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'hangman/uploads/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
-});
-
-const upload = multer({ storage: storage });
-
-app.post('/uploadavatar', upload.single('avatar'), async (req, res) => {
-    const { username } = req.body;
-    const file = req.file;
-
-    if (!file) {
-        return res.status(400).send('No file uploaded');
-    }
-
-    try {
-        // Check if the user exists
-        const { data: users, error: fetchError } = await supabase
-            .from('player')
-            .select('*')
-            .eq('username', username)
-            .single();
-
-        if (fetchError) {
-            console.error('Error fetching user:', fetchError.message);
-            return res.status(500).send('Internal Server Error');
-        }
-
-        if (!users || users.length === 0) {
-            // User not found
-            return res.status(404).json({ error: "User not found" });
-        }
-
-        const currentAvatarPath = users.avatar_path;
-        if (currentAvatarPath) {
-            // Delete the current avatar file
-            const currentAvatarFullPath = path.join(__dirname, 'hangman', currentAvatarPath.substring(1));
-            fs.unlink(currentAvatarFullPath, (err) => {
-                if (err) {
-                    console.error('Error deleting current avatar:', err);
-                    // Handle error as needed
-                } else {
-                    console.log('Current avatar deleted successfully');
-                }
-            });
-        }
-
-        // Update the avatar path in the database
-        const relativePath = `/uploads/${file.filename}`;
-        const { error: updateError } = await supabase
-            .from('player')
-            .update({ avatar_path: relativePath })
-            .eq('username', username);
-
-        if (updateError) {
-            console.error('Error updating avatar path:', updateError.message);
-            return res.status(500).send('Internal Server Error');
-        }
-
-        res.status(200).json({ success: true, avatarPath: relativePath });
-    } catch (error) {
-        console.error('Error uploading avatar:', error.message);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
