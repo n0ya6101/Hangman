@@ -10,6 +10,7 @@ const cors = require('cors')
 require('dotenv').config();
 
 
+
 app.use(cors(
     {
         origin: [],
@@ -202,7 +203,7 @@ app.post("/updatestat", async (req, res) => {
     }
 });
 
-const storage = multer.memoryStorage();
+const storage = multer.memoryStorage(); // Store file in memory
 const upload = multer({ storage: storage });
 
 app.post('/uploadavatar', upload.single('avatar'), async (req, res) => {
