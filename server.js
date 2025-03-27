@@ -25,7 +25,7 @@ const port = process.env.PORT || 8000;
 // Initialize Supabase client
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey, { storageBucket: 'profile' });
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'hangman')));
@@ -211,20 +211,29 @@ app.post('/uploadavatar', upload.single('avatar'), async (req, res) => {
     const file = req.file;
 
     if (!file) {
-        return res.status(400).send('No file uploaded');
+        return res.status(400).json({ error: 'No file uploaded' });
     }
 
     try {
-        // Upload the file to the Supabase bucket
-        const { data, error } = await supabase.storage.from('profile').upload(`${username}/${file.originalname}`, file.buffer);
+        // Define file path in Supabase bucket
+        const filePath = `profile/${username}.jpg`;
+
+        // Upload to Supabase Storage
+        const { data, error } = await supabase.storage.from('profile').upload(filePath, fs.createReadStream(file.path), {
+            contentType: file.mimetype,
+            upsert: true // Replace existing image
+        });
+
+        // Delete local file after upload
+        fs.unlinkSync(file.path);
 
         if (error) {
             console.error('Error uploading avatar:', error.message);
-            return res.status(500).json({ error: 'Internal Server Error' });
+            return res.status(500).json({ error: 'Failed to upload avatar' });
         }
 
-        // Get the URL of the uploaded file
-        const avatarUrl = `${supabaseUrl}/storage/v1/object/public/profile/${username}/${file.originalname}`;
+        // Construct public URL
+        const avatarUrl = `${supabaseUrl}/storage/v1/object/public/${filePath}`;
 
         res.status(200).json({ success: true, avatarUrl });
     } catch (error) {
