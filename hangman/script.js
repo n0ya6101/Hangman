@@ -420,7 +420,7 @@ async function getprofile(username) {
     let loggedUser = localStorage.getItem("username-logged");
     console.log("Logged in user:", loggedUser);
 
-    if (loggedUser != null) {
+    if (loggedUser) {
         document.getElementById('username-profile').textContent = loggedUser;
     }
 
@@ -431,7 +431,7 @@ async function getprofile(username) {
             let response = await fetch('/getprofile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: username })
+                body: JSON.stringify({ username })
             });
 
             if (!response.ok) {
@@ -446,12 +446,13 @@ async function getprofile(username) {
             // Debugging log
             console.log("Profile Data:", data);
 
-            // Update Profile Stats
-            document.getElementById('wins-profile').textContent = data.win ?? 0;
-            document.getElementById('losses-profile').textContent = data.loss ?? 0;
-            document.getElementById('total-profile').textContent = (data.win + data.loss) ?? 0;
+            // ✅ Correctly extract win/loss from userProfile
+            const userProfile = data.userProfile;
+            document.getElementById('wins-profile').textContent = userProfile.win ?? 0;
+            document.getElementById('losses-profile').textContent = userProfile.loss ?? 0;
+            document.getElementById('total-profile').textContent = (userProfile.win + userProfile.loss) ?? 0;
 
-            // Update Profile Picture
+            // ✅ Update Profile Picture
             let profilePicElement = document.querySelector('.profile-pic');
             if (!data.avatarUrl || data.avatarUrl.includes("placeholder.com")) {
                 profilePicElement.src = "./game/resource/profile1.jpg"; // Default Avatar
