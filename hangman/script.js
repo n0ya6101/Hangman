@@ -416,70 +416,58 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+async function getprofile(username) {
+    let loggedUser = localStorage.getItem("username-logged");
+    console.log("Logged in user:", loggedUser);
 
-async function getprofile (username){
-     
-     let loggedUser=localStorage.getItem("username-logged");
-     console.log(loggedUser);
-     if (loggedUser!=null)
-     {
-        document.getElementById('username-profile').textContent=loggedUser;
-     }
+    if (loggedUser != null) {
+        document.getElementById('username-profile').textContent = loggedUser;
+    }
 
-     logged_username=document.getElementById('username-profile').textContent;
-    
-    if(logged_username!="Guest")
-    {   
-        fetch('/getprofile',{
-            method: 'post',
-            headers: new Headers({'Content-Type': 'application/json'}),
-            body: JSON.stringify({
-            username:username,
-          
-            })
-        })
-        .then(response => {
-            if (response.ok) {
-                // stat received succesfully
-                return response.json(); // Parse the JSON response
-            } else if (response.status === 401) {
-                // Username not found
-                return response.json().then(data => {
-                    alert(data.error); // Assuming the server sends back an object with an 'error' property
-                    throw new Error('User not found'); // Throw an error to be caught by the catch block
-                });
+    let logged_username = document.getElementById('username-profile').textContent;
+
+    if (logged_username !== "Guest") {
+        try {
+            let response = await fetch('/getprofile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: username })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error fetching profile:", errorData.error);
+                alert(errorData.error || "Failed to fetch profile.");
+                return;
+            }
+
+            let data = await response.json();
+
+            // Debugging log
+            console.log("Profile Data:", data);
+
+            // Update Profile Stats
+            document.getElementById('wins-profile').textContent = data.win ?? 0;
+            document.getElementById('losses-profile').textContent = data.loss ?? 0;
+            document.getElementById('total-profile').textContent = (data.win + data.loss) ?? 0;
+
+            // Update Profile Picture
+            let profilePicElement = document.querySelector('.profile-pic');
+            if (!data.avatarUrl || data.avatarUrl.includes("placeholder.com")) {
+                profilePicElement.src = "./game/resource/profile1.jpg"; // Default Avatar
             } else {
-                throw new Error('Unexpected response status');
+                profilePicElement.src = data.avatarUrl;
+                localStorage.setItem("username-pfp", data.avatarUrl);
             }
-        })
-        .then(data => {
-            
-            // Assuming you have elements with IDs 'usernameDisplay', 'winsDisplay', and 'lossesDisplay'
-            console.log(data.username, data.win , data.loss,data.avatarPath);
-            document.getElementById('wins-profile').textContent = data.win;
-            document.getElementById('losses-profile').textContent = data.loss;
-            document.getElementById('total-profile').textContent = (data.win + data.loss);
-            if(data.avatarPath==null){
-                document.querySelector('.profile-pic').src = "./game/resource/profile1.jpg";
-            }
-            else {
-                document.querySelector('.profile-pic').src = data.avatarPath;
-                localStorage.setItem("username-pfp", data.avatarPath);
-            }
-           
-            
-            
-        });
-   
-    }
-    else {
-        // document.getElementById("msg-profile").innerText="Hello! Login is save your progress";
-        console.log("not loggedin");
 
+        } catch (error) {
+            console.error("Fetch error:", error);
+            alert("An error occurred while fetching profile.");
+        }
+    } else {
+        console.log("User not logged in");
     }
-
 }
-
 
 
 
